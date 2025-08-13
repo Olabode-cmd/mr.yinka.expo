@@ -1,31 +1,78 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
+import { StyleSheet, Image, ScrollView } from 'react-native';
 import { Text, View } from '@/components/Themed';
+import { Link } from "expo-router";
 
-export default function TabOneScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
-  );
+import { useState, useEffect } from 'react';
+
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+export default function TabOneScreen() {
+  const [products, setProducts] = useState<Product | null>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('https://dummyjson.com/products');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setProducts(data.products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  })
+
+  if (loading) {
+    return (
+      <View className='flex-1 bg-white'>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className='flex-1 bg-white'>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+
+  return (
+    <ScrollView className='bg-white flex-1'>
+      {products.map((product: Product) => (
+        <Link
+          href={`/products/${product.id}`}
+          key={product.id}
+          style={{ marginBottom: 20 }}
+        >
+          <Image
+            source={{ uri: product.thumbnail }}
+            style={{ width: 100, height: 100 }}
+          />
+          <View className='bg-white text-black'>
+            <Text className='text-black text-2xl'>{product.title}</Text>
+            <Text>{product.description}</Text>
+            <Text>Price: ${product.price}</Text>
+          </View>
+        </Link>
+      ))}
+    </ScrollView>
+  );
+}
