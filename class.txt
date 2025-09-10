@@ -1,0 +1,82 @@
+Notes on POST, PUT, PATCH, and DELETE
+
+- For POST, PUT, and PATCH requests, you typically send data in the request body to create or update a resource.
+- For DELETE requests, you usually just need to specify the resource identifier in the URL and do not send a body.
+
+For PUT, PATCH, and DELETE, you need to target an id in the API endpoint URL.
+
+The structure of the request is mostly the same for everyone except GET.
+
+In DELETE, we don't have a request body.
+
+
+Status codes
+There are five major divisions of status codes.
+
+100- 199 (Informational status codes):
+These codes indicate that the request has been received and understood, 
+and that the client should continue with the request or ignore it if it is already finished.
+
+200-299 (Success status codes)
+These codes indicate that the request was successfully received, understood, and accepted.
+
+Example:
+200 - success
+201 - created
+202 - accepted (request has been accepted for processing, but the processing has not been completed)
+204 - no content (successful request but no content to return, often used in DELETE requests)
+
+
+300-399 (Redirection status codes)
+These codes indicate that further action needs to be taken by the user agent in order to fulfill the request.
+
+400-499 (Client error)
+These errors is a bracket for all errors that have to do with the client (or user) side.
+
+Example:
+400 - Bad request
+401 - Unauthorized (platform does not recognize you)
+402 - Payment required
+403 - Access denied (platform recognizes you but you're trying to do something you don't have permission to do)
+404 - Not found
+405 - Method not allowed
+406 - Unacceptable
+408 - Request timeout
+422 - Unprocessable content
+
+500-599 (Server error)
+These errors are a bracket for all errors that have to do with the server side.
+
+Example:
+500 - Internal server error
+503 - Request unavailable
+504 - Gateway timeout
+
+
+Notes on Login systems, authentication and tokens
+
+When you login to a platform, you get an access token and a refresh token.
+
+The access token is an identifier that tells the platform who exactly is logged in/trying to perform a specific action.
+Access tokens are generally short-lived so we use refresh tokens to get new access tokens when we don't want the user
+to relogin manually.
+
+The refresh token is generally long-lived and is used to get new access tokens without making the user relogin manually.
+
+On mobile apps, we use either AsyncStorage or expo-secure-store to store our tokens.
+
+Using AsyncStorage as an example:
+
+To store something in AsyncStorage, we can do AsyncStorage.setItem("accessToken", data.accessToken)
+
+To get something in AsyncStorage, we can do AsyncStorage.getItem("accessToken")
+
+To remove something from AsyncStorage, we can do AsyncStorage.removeItem("accessToken")
+
+
+Notes on Flatlist
+
+FlatList is a component in React Native that is used to render a list of items efficiently. 
+It is optimized for handling large datasets and provides features like lazy loading, item recycling, and smooth scrolling.
+
+You can also enable pull-to-refresh using FlatList.
