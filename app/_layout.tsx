@@ -50,8 +50,12 @@ function RootLayoutNav() {
     <ThemeProvider value={DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="products/[id]" options={{ title: 'Product Details' }} />
+        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack.Screen name="login" options={{ presentation: "modal" }} />
+        <Stack.Screen
+          name="products/[id]"
+          options={{ title: "Product Details" }}
+        />
       </Stack>
     </ThemeProvider>
   );
