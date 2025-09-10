@@ -34,13 +34,13 @@ export default function TabTwoScreen() {
     // };
     try {
       const response = await fetch(
-        "https://api.escuelajs.co/api/v1/products/",
+        "https://api.escuelajs.co/api/v1/products/", // for PUT, PATCH and DELETE, target an id
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData), // with DELETE, we don't send a body
         }
       );
 
